@@ -1,16 +1,30 @@
 {
     "name": "babel-plugin-transform-cloudui5",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "",
     "main": "dist/index.js",
+    "engines": {
+        "node": ">=12"
+    },
     "scripts": {
         "build": "babel src -d dist",
         "prepare": "npm run build",
         "test": "node dist/test/pluginTest.js"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:tapsiturbi/babel-plugin-transform-cloudui5.git"
+    },
+    "keywords": ["sapui5", "openui5", "typescript", "cloudui5"],
+    "author": "Levy Bajamundi <levybajamundi@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/tapsiturbi/babel-plugin-transform-cloudui5/issues"
+    },
+    "homepage": "https://github.com/tapsiturbi/babel-plugin-transform-cloudui5",
     "dependencies": {
         "@babel/core": "^7.15.5",
         "@babel/helper-plugin-utils": "^7.14.5"
