@@ -1,9 +1,6 @@
 import { transformFileSync, transformSync } from '@babel/core';
 import myPlugin from '../index.js';
-// const path = require('path')
 import * as path from "path";
-// import "path";
-// import "__dirname";
 
 const plugins = [
     myPlugin,

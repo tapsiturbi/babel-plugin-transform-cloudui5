@@ -5,7 +5,7 @@ import Control from "sap/ui/core/Control";
 /**
  * Model class for Products
  *
- * @name spinifex.strato.models.ProductModel
+ * @name cloudui5.models.ProductModel
  * @cui5model
  */
 class ProductModel extends JSONModel {

@@ -11,7 +11,7 @@ import ValueState from "sap/ui/core/ValueState";
  * icon besides it. If the edit icon is pressed, shows an
  * input control and a save/cancel icon next to it.
  *
- * @name spinifex.strato.controls.m.EditableText
+ * @name cloudui5.controls.EditableText
  * @cui5control
  */
 export default class EditableText extends Control {

@@ -1,19 +1,12 @@
 import Util from "./util.js";
 import { types as t } from "@babel/core";
-// import babelCore from "@babel/core";
-
-// const t = babelCore.types;
 
 /**
  * Parses model classes that creates getters/setters for all private 
  * class properties with @property jsdoc. Class should have the
- * @flexmodel in the comments
+ * @cui5control in the comments
  */
 export default class ControlParser {
-
-    // constructor(_ref) {
-    //     t = _ref.types;
-    // }
 
     /**
      * Checks if the class is a flexmodel and creates getters/setters if they are.
@@ -21,7 +14,6 @@ export default class ControlParser {
      */
     processClass(path) {
         if ( this.isFlexControlClass(path) ) {
-            console.log("Flex Control Class ");
 
             let properties = [];
 
@@ -37,10 +29,6 @@ export default class ControlParser {
             path.insertAfter(t.expressionStatement(
                 t.assignmentExpression("=", 
                     t.memberExpression(
-                        // t.memberExpression(
-                        //     t.identifier(path.node.id.name),
-                        //     t.identifier("prototype"),
-                        // ), 
                         t.identifier(path.node.id.name),
                         t.identifier("metadata")
                     ),
@@ -61,18 +49,6 @@ export default class ControlParser {
                             }))
                         )
                     ]),
-
-                    // t.objectExpression(properties.map(prop => {
-                    //     return t.objectProperty(
-                    //         t.identifier(prop.name),
-                    //         t.objectExpression([
-                    //             t.objectProperty(
-                    //                 t.identifier("type"),
-                    //                 t.stringLiteral(prop.type)
-                    //             )
-                    //         ]),
-                    //     );
-                    // }))
                 ),
             ));
         }
@@ -86,7 +62,6 @@ export default class ControlParser {
     isFlexControlClass(path) {
         let leadingComments;
         if ( path && path.node && path.node.leadingComments ) {
-            // return path.node.leadingComments.find(c => c.value.indexOf("@flex") > -1) ? true : false;
             leadingComments = path.node.leadingComments;
         } else if (
             (t.isClassExpression(path.node) && t.isReturnStatement(path.parent)) ||
@@ -124,12 +99,9 @@ export default class ControlParser {
      * @param {*} path 
      */
     prepProperty(path) {
-        // console.log("Class prop: ", path.isClassProperty(), " Class private prop: ", path.isClassPrivateProperty());
-    
         if ( path.node.typeAnnotation ) {
             const name = path.node.key.name;
             const type = Util.getNormalizedTypeByPath(path);
-            // console.log("Control property: ", name, path.node.typeAnnotation.typeAnnotation.type);
 
             return { name, type };
 
@@ -137,18 +109,5 @@ export default class ControlParser {
 
         return null;
     }
-    
-    // return {
-    //     Class(path) {
-    //         if ( isFlexModelClass(path) ) {
-    //             console.log("Flex class ");
-    //             path.get("body.body").forEach(child => {
-    //                 if ( isFlexProperty(child) ) {
-    //                     privatePropHander(child, path);
-    //                 }
-    //                 // console.log("Class prop: ", child.isClassProperty(), " Class private prop: ", child.isClassPrivateProperty())
-    //             });
-    //         }
-    //     }
-    // };
+
 }
