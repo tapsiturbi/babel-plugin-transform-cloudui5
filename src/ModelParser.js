@@ -1,15 +1,19 @@
 import Util from "./util.js";
+import { types as t } from "@babel/core";
+// import babelCore from "@babel/core";
+
+// const t = babelCore.types;
 
 /**
  * Parses model classes that creates getters/setters for all private 
  * class properties with @property jsdoc. Class should have the
  * @flexmodel in the comments
  */
-export default class ModelParser {
+export class ModelParser {
 
-    constructor(_ref) {
-        this.t = _ref.types;
-    }
+    // constructor(_ref) {
+    //     t = _ref.types;
+    // }
 
     /**
      * Checks if the class is a flexmodel and creates getters/setters if they are.
@@ -38,16 +42,16 @@ export default class ModelParser {
             // return path.node.leadingComments.find(c => c.value.indexOf("@flex") > -1) ? true : false;
             leadingComments = path.node.leadingComments;
         } else if (
-            (this.t.isClassExpression(path.node) && this.t.isReturnStatement(path.parent)) ||
-            (this.t.isClassDeclaration(path.node) && (
-                this.t.isExportDefaultDeclaration(path.parent) || this.t.isExportDeclaration(path.parent)
+            (t.isClassExpression(path.node) && t.isReturnStatement(path.parent)) ||
+            (t.isClassDeclaration(path.node) && (
+                t.isExportDefaultDeclaration(path.parent) || t.isExportDeclaration(path.parent)
             ))
         ) {
             leadingComments = path.parent.leadingComments;
         }
     
         if ( leadingComments ) {
-            return leadingComments.find(c => c.value.indexOf("@flexmodel") > -1) ? true : false;;
+            return leadingComments.find(c => c.value.indexOf("@cui5model") > -1) ? true : false;;
         }
     
         return false;
@@ -90,27 +94,27 @@ export default class ModelParser {
             // const getterExpr = t.functionExpression(t.identifier(`get${propName}`), [], t.blockStatement([]));
     
             const getterBody = [
-                this.t.returnStatement(
-                    this.t.callExpression(
-                        this.t.memberExpression(this.t.identifier("this"),this.t.identifier("getProperty")), [
-                            this.t.stringLiteral(`/${propName}`)
+                t.returnStatement(
+                    t.callExpression(
+                        t.memberExpression(t.identifier("this"),t.identifier("getProperty")), [
+                            t.stringLiteral(`/${propName}`)
                         ]
                     )
                 )
             ];
-            const getterExpr = this.t.classMethod("method", this.t.identifier(`get${propNameCap}`), [], this.t.blockStatement(getterBody));
+            const getterExpr = t.classMethod("method", t.identifier(`get${propNameCap}`), [], t.blockStatement(getterBody));
     
             const setterBody = [
-                this.t.expressionStatement(
-                    this.t.callExpression(
-                        this.t.memberExpression(this.t.identifier("this"),this.t.identifier("setProperty")), [
-                            this.t.stringLiteral(`/${propName}`),
-                            this.t.identifier("value")
+                t.expressionStatement(
+                    t.callExpression(
+                        t.memberExpression(t.identifier("this"),t.identifier("setProperty")), [
+                            t.stringLiteral(`/${propName}`),
+                            t.identifier("value")
                         ]
                     )
                 )
             ];
-            const setterExpr = this.t.classMethod("method", this.t.identifier(`set${propNameCap}`), [ this.t.identifier("value") ], this.t.blockStatement(setterBody));
+            const setterExpr = t.classMethod("method", t.identifier(`set${propNameCap}`), [ t.identifier("value") ], t.blockStatement(setterBody));
     
             // classPath.insertAfter(getterExpr);
             classPath.get("body").unshiftContainer("body", getterExpr);

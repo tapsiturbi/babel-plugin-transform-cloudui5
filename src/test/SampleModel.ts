@@ -6,7 +6,7 @@ import Control from "sap/ui/core/Control";
  * Model class for Products
  *
  * @name spinifex.strato.models.ProductModel
- * @flexmodel
+ * @cui5model
  */
 class ProductModel extends JSONModel {
 

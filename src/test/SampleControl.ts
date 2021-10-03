@@ -12,7 +12,7 @@ import ValueState from "sap/ui/core/ValueState";
  * input control and a save/cancel icon next to it.
  *
  * @name spinifex.strato.controls.m.EditableText
- * @flexcontrol
+ * @cui5control
  */
 export default class EditableText extends Control {
 

@@ -1,15 +1,21 @@
-import syntaxTypeScript from "@babel/plugin-syntax-typescript";
+import { declare } from "@babel/helper-plugin-utils";
+// import babelHelperPluginUtils from "@babel/helper-plugin-utils";
+// import syntaxTypeScript from "@babel/plugin-syntax-typescript";
 import ControlParser from "./ControlParser.js";
-import ModelParser from "./ModelParser.js";
+import { ModelParser } from "./ModelParser.js";
+// import { types as t } from "@babel/core";
 
 
 
 // module.exports.default = function (_ref) {
-export default function FlexUI5(_ref) {
-    var t = _ref.types;
+// export default function FlexUI5(_ref) {
+export default declare((api, options) => {
+    api.assertVersion(7);
 
-    let modelParser = new ModelParser(_ref);
-    let controlParser = new ControlParser(_ref);
+    // const t = _ref.types;
+
+    let modelParser = new ModelParser();
+    let controlParser = new ControlParser();
 
     // function isFlexClass(path) {
     //     let leadingComments;
@@ -90,6 +96,8 @@ export default function FlexUI5(_ref) {
     
     return {
         // inherits: syntaxTypeScript.default,
+        name: "babel-plugin-transform-cloudui5",
+
         visitor: {
             Class(path) {
                 modelParser.processClass(path);
@@ -113,4 +121,4 @@ export default function FlexUI5(_ref) {
             // ...ModelVisitor(_ref)
         }
     };
-}
+});

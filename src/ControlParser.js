@@ -1,4 +1,8 @@
 import Util from "./util.js";
+import { types as t } from "@babel/core";
+// import babelCore from "@babel/core";
+
+// const t = babelCore.types;
 
 /**
  * Parses model classes that creates getters/setters for all private 
@@ -7,9 +11,9 @@ import Util from "./util.js";
  */
 export default class ControlParser {
 
-    constructor(_ref) {
-        this.t = _ref.types;
-    }
+    // constructor(_ref) {
+    //     t = _ref.types;
+    // }
 
     /**
      * Checks if the class is a flexmodel and creates getters/setters if they are.
@@ -30,27 +34,45 @@ export default class ControlParser {
                 }
             });
 
-            path.insertAfter(this.t.expressionStatement(
-                this.t.assignmentExpression("=", 
-                    this.t.memberExpression(
-                        // this.t.memberExpression(
-                        //     this.t.identifier(path.node.id.name),
-                        //     this.t.identifier("prototype"),
+            path.insertAfter(t.expressionStatement(
+                t.assignmentExpression("=", 
+                    t.memberExpression(
+                        // t.memberExpression(
+                        //     t.identifier(path.node.id.name),
+                        //     t.identifier("prototype"),
                         // ), 
-                        this.t.identifier(path.node.id.name),
-                        this.t.identifier("metadata")
+                        t.identifier(path.node.id.name),
+                        t.identifier("metadata")
                     ),
-                    this.t.objectExpression(properties.map(prop => {
-                        return this.t.objectProperty(
-                            this.t.identifier(prop.name),
-                            this.t.objectExpression([
-                                this.t.objectProperty(
-                                    this.t.identifier("type"),
-                                    this.t.stringLiteral(prop.type)
-                                )
-                            ]),
+
+                    t.objectExpression([
+                        t.objectProperty(
+                            t.identifier("properties"),
+                            t.objectExpression(properties.map(prop => {
+                                return t.objectProperty(
+                                    t.identifier(prop.name),
+                                    t.objectExpression([
+                                        t.objectProperty(
+                                            t.identifier("type"),
+                                            t.stringLiteral(prop.type)
+                                        )
+                                    ]),
+                                );
+                            }))
                         )
-                    }))
+                    ]),
+
+                    // t.objectExpression(properties.map(prop => {
+                    //     return t.objectProperty(
+                    //         t.identifier(prop.name),
+                    //         t.objectExpression([
+                    //             t.objectProperty(
+                    //                 t.identifier("type"),
+                    //                 t.stringLiteral(prop.type)
+                    //             )
+                    //         ]),
+                    //     );
+                    // }))
                 ),
             ));
         }
@@ -67,16 +89,16 @@ export default class ControlParser {
             // return path.node.leadingComments.find(c => c.value.indexOf("@flex") > -1) ? true : false;
             leadingComments = path.node.leadingComments;
         } else if (
-            (this.t.isClassExpression(path.node) && this.t.isReturnStatement(path.parent)) ||
-            (this.t.isClassDeclaration(path.node) && (
-                this.t.isExportDefaultDeclaration(path.parent) || this.t.isExportDeclaration(path.parent)
+            (t.isClassExpression(path.node) && t.isReturnStatement(path.parent)) ||
+            (t.isClassDeclaration(path.node) && (
+                t.isExportDefaultDeclaration(path.parent) || t.isExportDeclaration(path.parent)
             ))
         ) {
             leadingComments = path.parent.leadingComments;
         }
     
         if ( leadingComments ) {
-            return leadingComments.find(c => c.value.indexOf("@flexcontrol") > -1) ? true : false;;
+            return leadingComments.find(c => c.value.indexOf("@cui5control") > -1) ? true : false;;
         }
     
         return false;
